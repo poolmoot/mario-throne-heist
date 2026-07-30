@@ -1,6 +1,6 @@
 {
   "id": "3d-third-person-controller",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "3D Third Person Action",
   "engineMinVersion": "0.5.43",
   "entryScene": "res://main.tscn",
