@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/characters/mario/mario_runtime.glb" id="1_mario"]
+[ext_resource type="Script" path="res://assets/characters/mario/mario_visual.gd" id="2_anim"]
+
+[node name="MarioVisual" type="Node3D"]
+script = ExtResource("2_anim")
+
+[node name="Model" parent="." instance=ExtResource("1_mario")]

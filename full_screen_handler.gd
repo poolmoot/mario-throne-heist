@@ -4,6 +4,10 @@ func _init() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+
 func _input(event: InputEvent) -> void:
 	if OS.has_feature("HTML5"):
 		if event is InputEventMouseButton and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:

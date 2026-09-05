@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://game/weapons/blaster_bolt.gd" id="1_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bolt"]
+size = Vector3(0.22, 0.22, 1.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_core"]
+shading_mode = 0
+albedo_color = Color(1, 0.96, 0.82, 1)
+emission_enabled = true
+emission = Color(1, 0.92, 0.7, 1)
+emission_energy_multiplier = 12.0
+disable_receive_shadows = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_core"]
+material = SubResource("StandardMaterial3D_core")
+top_radius = 0.055
+bottom_radius = 0.055
+height = 1.15
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sheath"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(1, 0.18, 0.05, 0.55)
+emission_enabled = true
+emission = Color(1, 0.22, 0.04, 1)
+emission_energy_multiplier = 10.0
+disable_receive_shadows = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sheath"]
+material = SubResource("StandardMaterial3D_sheath")
+top_radius = 0.12
+bottom_radius = 0.12
+height = 1.28
+radial_segments = 16
+
+[sub_resource type="SphereMesh" id="SphereMesh_nose"]
+material = SubResource("StandardMaterial3D_core")
+radius = 0.07
+height = 0.14
+radial_segments = 12
+rings = 8
+
+[node name="BlasterBolt" type="Area3D"]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_bolt")
+
+[node name="Core" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_core")
+
+[node name="Sheath" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_sheath")
+
+[node name="Nose" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.58)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_nose")
+
+[node name="Glow" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.32, 0.08, 1)
+light_energy = 5.5
+light_specular = 0.2
+shadow_enabled = false
+omni_range = 7.0
+omni_attenuation = 1.6
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

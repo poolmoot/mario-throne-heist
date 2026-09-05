@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://game/weapons/lightsaber.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/weapons/lightsaber/lightsaber.glb" id="2_model"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_saber"]
+size = Vector3(0.36, 0.36, 1.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blade"]
+shading_mode = 0
+albedo_color = Color(0.78, 0.95, 1, 1)
+emission_enabled = true
+emission = Color(0.15, 0.55, 1, 1)
+emission_energy_multiplier = 18.0
+disable_receive_shadows = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aura"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.35, 0.75, 1, 0.4)
+emission_enabled = true
+emission = Color(0.2, 0.65, 1, 1)
+emission_energy_multiplier = 10.0
+disable_receive_shadows = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_aura"]
+material = SubResource("StandardMaterial3D_aura")
+top_radius = 0.09
+bottom_radius = 0.09
+height = 1.55
+radial_segments = 14
+
+[node name="Lightsaber" type="Area3D"]
+collision_layer = 0
+collision_mask = 1
+monitoring = true
+monitorable = false
+script = ExtResource("1_script")
+
+[node name="Visual" parent="." instance=ExtResource("2_model")]
+transform = Transform3D(2.8, 0, 0, 0, 2.8, 0, 0, 0, 2.8, 0, 0, 0)
+surface_material_override/1 = SubResource("StandardMaterial3D_blade")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_saber")
+
+[node name="BladeAura" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.4, 0, 0, 0, -1.0490734e-07, -2.4, 0, 2.4, -1.0490734e-07, 0, 0, 0.2)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_aura")
+
+[node name="BladeLight" type="OmniLight3D" parent="."]
+light_color = Color(0.35, 0.7, 1, 1)
+light_energy = 7.0
+light_specular = 0.35
+shadow_enabled = false
+omni_range = 9.0
+omni_attenuation = 1.4
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

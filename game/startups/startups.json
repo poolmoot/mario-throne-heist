@@ -1,0 +1,22 @@
+[
+  {"id": "lunar", "name": "Lunar", "valuation": 2800000000, "color": "#1B4DFF", "domain": "lunar.app"},
+  {"id": "pleo", "name": "Pleo", "valuation": 12000000000, "color": "#FF5A36", "domain": "pleo.io"},
+  {"id": "tgtg", "name": "Too Good To Go", "valuation": 7000000000, "color": "#006D38", "domain": "toogoodtogo.com"},
+  {"id": "trustpilot", "name": "Trustpilot", "valuation": 4000000000, "color": "#00B67A", "domain": "trustpilot.com"},
+  {"id": "vivino", "name": "Vivino", "valuation": 4000000000, "color": "#A32035", "domain": "vivino.com"},
+  {"id": "templafy", "name": "Templafy", "valuation": 2500000000, "color": "#5B2D90", "domain": "templafy.com"},
+  {"id": "podimo", "name": "Podimo", "valuation": 1800000000, "color": "#FF2E6D", "domain": "podimo.com"},
+  {"id": "corti", "name": "Corti", "valuation": 800000000, "color": "#0B1F3A", "domain": "corti.ai"},
+  {"id": "leapwork", "name": "Leapwork", "valuation": 1200000000, "color": "#00C2A8", "domain": "leapwork.com"},
+  {"id": "contractbook", "name": "Contractbook", "valuation": 400000000, "color": "#111111", "domain": "contractbook.com"},
+  {"id": "penneo", "name": "Penneo", "valuation": 350000000, "color": "#1A73E8", "domain": "penneo.com"},
+  {"id": "cbrain", "name": "cBrain", "valuation": 2200000000, "color": "#E31C23", "domain": "cbrain.com"},
+  {"id": "bettercollective", "name": "Better Collective", "valuation": 8000000000, "color": "#F5A623", "domain": "bettercollective.com"},
+  {"id": "trifork", "name": "Trifork", "valuation": 3000000000, "color": "#00A3E0", "domain": "trifork.com"},
+  {"id": "unity", "name": "Unity", "valuation": 65000000000, "color": "#222222", "domain": "unity.com"},
+  {"id": "zendesk", "name": "Zendesk", "valuation": 70000000000, "color": "#03363D", "domain": "zendesk.com"},
+  {"id": "justeat", "name": "Just Eat", "valuation": 50000000000, "color": "#F36D00", "domain": "just-eat.com"},
+  {"id": "peakon", "name": "Peakon", "valuation": 4500000000, "color": "#5C2D91", "domain": "peakon.com"},
+  {"id": "sitecore", "name": "Sitecore", "valuation": 10000000000, "color": "#EB1C2D", "domain": "sitecore.com"},
+  {"id": "tame", "name": "Tame", "valuation": 120000000, "color": "#2ECC71", "domain": "tame.ai"}
+]

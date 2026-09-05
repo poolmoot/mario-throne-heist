@@ -55,7 +55,7 @@ must be fast and return directly to the briefing/start sequence.
 - Button A: interact, collect items, and use contextual objects.
 - Button B: equip or remove a Stormtrooper disguise.
 - Button C: crouch and move quietly.
-- Cover then uncover Modulino Light: throw the lightsaber.
+- Cover Modulino Light: throw the lightsaber (fires on contact, not while held).
 - Touchscreen: title, pause, settings, and results menus only.
 
 The camera follows Mario automatically, rotates toward sustained movement, frames nearby
@@ -65,9 +65,9 @@ All menus must also support joystick navigation and button A confirmation.
 ## Lightsaber and Sensor
 
 At mission start, the bridge records the ambient-light baseline while the sensor is
-uncovered. A valid throw requires a deliberate covered interval followed by a stable return
-toward the baseline. Hysteresis, minimum hold duration, and a cooldown prevent room-light
-changes from producing accidental throws.
+uncovered. Covering the sensor throws immediately on contact. Holding a hand there does
+not retrigger. Uncovering re-arms after a short cooldown so room-light flicker does not
+produce extra throws.
 
 The lightsaber travels forward with mild target assistance, stops at the first guard or
 solid wall, and never pierces or damages multiple guards. A hit removes one Stormtrooper in
@@ -161,7 +161,7 @@ Focused systems:
 
 The game receives hardware gestures as ordinary input events. The Uno Q bridge is extended
 to recognize `ModulinoLight` at I²C address `0x53`, publish ambient light readings, detect
-the calibrated cover-release gesture, inject the configured throw action, and invoke
+the calibrated cover-tap gesture, inject the configured throw action, and invoke
 `ModulinoVibro`. Hardware-specific code remains outside gameplay scenes.
 
 ## Uno Q Performance Budget

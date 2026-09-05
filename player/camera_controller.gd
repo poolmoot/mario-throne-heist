@@ -23,20 +23,22 @@ var _pivot: Node3D
 var _current_pivot_type: CAMERA_PIVOT
 var _rotation_input: float
 var _tilt_input: float
-var _mouse_input := false
 var _offset: Vector3
 var _anchor: CharacterBody3D
 var _euler_rotation: Vector3
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
-	if _mouse_input:
-		# Mouse relative is already a displacement (pixels moved this event),
-		# so it converts straight to radians. += so several motion events in
-		# one frame accumulate instead of overwriting each other.
-		_rotation_input += -event.relative.x * mouse_sensitivity
-		_tilt_input += -event.relative.y * mouse_sensitivity
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		add_look_input(event.relative)
+
+
+func add_look_input(relative: Vector2) -> void:
+	# Mouse relative is already a displacement (pixels moved this event),
+	# so it converts straight to radians. += so several motion events in
+	# one frame accumulate instead of overwriting each other.
+	_rotation_input += -relative.x * mouse_sensitivity
+	_tilt_input += -relative.y * mouse_sensitivity
 
 
 func _process(delta: float) -> void:

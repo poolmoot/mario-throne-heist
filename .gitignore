@@ -3,5 +3,9 @@
 exports/
 bin/
 build/
+*.bak
 
 .env
+
+# Summer Engine local-only state (SummerGit, caches, locks)
+.summer/local/

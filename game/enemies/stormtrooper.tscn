@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://game/enemies/stormtrooper.gd" id="1_script"]
+[ext_resource type="Script" path="res://game/enemies/stormtrooper_visual.gd" id="2_visual"]
+[ext_resource type="PackedScene" path="res://assets/characters/troopers/guard_runtime.glb" id="3_model"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.6
+height = 2.85
+
+[node name="Stormtrooper" type="CharacterBody3D" groups=["troopers"]]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.425, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Visual" type="Node3D" parent="."]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+script = ExtResource("2_visual")
+
+[node name="Model" parent="Visual" instance=ExtResource("3_model")]
+
+[node name="Sight" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+target_position = Vector3(0, 0, -16)
+collision_mask = 1

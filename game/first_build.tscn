@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://b8px5d1wv4btj"]
+
+[ext_resource type="PackedScene" path="res://assets/environment/kaykit/kaykit_city.tscn" id="1_city"]
+[ext_resource type="PackedScene" uid="uid://ciqrpd5675boy" path="res://player/player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://dovqn3xtxmdix" path="res://game/mission/game_flow.gd" id="3_flow"]
+[ext_resource type="PackedScene" path="res://game/mission/start_gate.tscn" id="4_gate"]
+[ext_resource type="PackedScene" path="res://game/mission/throne.tscn" id="5_throne"]
+[ext_resource type="PackedScene" path="res://game/mission/exit_zone.tscn" id="6_exit"]
+[ext_resource type="PackedScene" path="res://game/mission/mission_hud.tscn" id="7_hud"]
+[ext_resource type="PackedScene" path="res://game/enemies/stormtrooper.tscn" id="8_troop"]
+[ext_resource type="Script" uid="uid://lwebw8usx5m7" path="res://game/startups/startup_spawner.gd" id="9_startups"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_city"]
+sky_top_color = Color(0.18, 0.32, 0.62, 1)
+sky_horizon_color = Color(0.72, 0.82, 0.95, 1)
+ground_bottom_color = Color(0.08, 0.09, 0.12, 1)
+ground_horizon_color = Color(0.45, 0.52, 0.62, 1)
+
+[sub_resource type="Sky" id="Sky_city"]
+sky_material = SubResource("ProceduralSkyMaterial_city")
+
+[sub_resource type="Environment" id="Environment_city"]
+background_mode = 2
+sky = SubResource("Sky_city")
+ambient_light_source = 3
+ambient_light_energy = 0.65
+reflected_light_source = 2
+tonemap_mode = 2
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 1.15
+glow_strength = 0.95
+glow_bloom = 0.45
+
+[node name="FirstBuild" type="Node3D" unique_id=2082994407]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=56245449]
+environment = SubResource("Environment_city")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1860520747]
+transform = Transform3D(0.81915206, 0.46984634, -0.32898995, 0, 0.57357645, 0.81915206, 0.57357645, -0.6710101, 0.46984634, 0, 0, 0)
+light_color = Color(1, 0.94, 0.84, 1)
+light_energy = 1.1
+shadow_enabled = true
+directional_shadow_max_distance = 200.0
+
+[node name="CityMap" parent="." unique_id=1132268340 instance=ExtResource("1_city")]
+
+[node name="Player" parent="." unique_id=452522212 instance=ExtResource("2_player")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -72, 0.55, -64)
+
+[node name="Mission" type="Node" parent="." unique_id=1645350621]
+script = ExtResource("3_flow")
+
+[node name="StartGate" parent="Mission" unique_id=924953033 instance=ExtResource("4_gate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -72, 1.5, -58)
+
+[node name="Throne" parent="Mission" unique_id=807496566 instance=ExtResource("5_throne")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 12)
+
+[node name="ExitZone" parent="Mission" unique_id=382816206 instance=ExtResource("6_exit")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 1.5, 72)
+
+[node name="HUD" parent="Mission" unique_id=1637273294 instance=ExtResource("7_hud")]
+
+[node name="Startups" type="Node3D" parent="." unique_id=1888000099]
+script = ExtResource("9_startups")
+
+[node name="Troopers" type="Node3D" parent="." unique_id=1888000001]
+
+[node name="GuardA" parent="Troopers" unique_id=1888000002 instance=ExtResource("8_troop")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -72, 0, -24)
+patrol_to = Vector3(0, 0, 24)
+
+[node name="GuardB" parent="Troopers" unique_id=1888000003 instance=ExtResource("8_troop")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0, -20)
+patrol_to = Vector3(12, 0, 0)
+
+[node name="GuardC" parent="Troopers" unique_id=1888000004 instance=ExtResource("8_troop")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 4)
+patrol_to = Vector3(0, 0, -12)
+
+[node name="GuardD" parent="Troopers" unique_id=1888000005 instance=ExtResource("8_troop")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 18)
+patrol_to = Vector3(0, 0, 12)

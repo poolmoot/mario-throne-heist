@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://assets/environment/kaykit/kaykit_city.gd" id="1_city"]
+
+[node name="KaykitCity" type="Node3D"]
+script = ExtResource("1_city")
+
+[node name="Visuals" type="Node3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+
+[node name="Tiles" type="Node3D" parent="Visuals"]
+
+[node name="Props" type="Node3D" parent="Visuals"]
+
+[node name="Collision" type="Node3D" parent="."]

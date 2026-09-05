@@ -1,9 +1,12 @@
 class_name Player extends CharacterBody3D
 
 signal weapon_switched(weapon_name: String)
+signal died
 
 const BULLET_SCENE := preload("bullet.tscn")
+const SABER_SCENE := preload("res://game/weapons/lightsaber.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
+const LightCoverDetectorScript := preload("res://game/input/light_cover_detector.gd")
 
 enum WEAPON_TYPE { DEFAULT, GRENADE }
 
@@ -37,6 +40,7 @@ enum WEAPON_TYPE { DEFAULT, GRENADE }
 @onready var _ground_shapecast: ShapeCast3D = $GroundShapeCast
 @onready var _grenade_aim_controller: GrenadeLauncher = $GrenadeLauncher
 @onready var _character_skin: CharacterSkin = $CharacterRotationRoot/CharacterSkin
+@onready var _mario_visual: Node = $CharacterRotationRoot/MarioVisual
 @onready var _ui_aim_recticle: ColorRect = %AimRecticle
 @onready var _ui_coins_container: HBoxContainer = %CoinsContainer
 @onready var _step_sound: AudioStreamPlayer3D = $StepSound
@@ -53,10 +57,13 @@ enum WEAPON_TYPE { DEFAULT, GRENADE }
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
 @onready var _grenade_cooldown_tick := grenade_cooldown
+@onready var _saber_ready := true
+var _dead := false
+var _light_detector := LightCoverDetectorScript.new()
 
 
 func _ready() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_camera_controller.setup(self)
 	_grenade_aim_controller.visible = false
 	weapon_switched.emit(WEAPON_TYPE.keys()[0])
@@ -130,6 +137,13 @@ func _physics_process(delta: float) -> void:
 	_shoot_cooldown_tick += delta
 	_grenade_cooldown_tick += delta
 
+	# Covering the light sensor (or a tap of attack) throws once. Do not require
+	# the input to still be held — a sensor tap is down and up in one frame.
+	if _light_detector.consume_throw():
+		attack()
+	elif is_just_attacking and _equipped_weapon == WEAPON_TYPE.DEFAULT and not is_aiming:
+		attack()
+
 	if is_attacking:
 		match _equipped_weapon:
 			WEAPON_TYPE.DEFAULT:
@@ -137,8 +151,6 @@ func _physics_process(delta: float) -> void:
 					if _shoot_cooldown_tick > shoot_cooldown:
 						_shoot_cooldown_tick = 0.0
 						shoot()
-				elif is_just_attacking:
-					attack()
 			WEAPON_TYPE.GRENADE:
 				if _grenade_cooldown_tick > grenade_cooldown:
 					_grenade_cooldown_tick = 0.0
@@ -153,16 +165,16 @@ func _physics_process(delta: float) -> void:
 
 	# Set character animation
 	if is_just_jumping:
-		_character_skin.jump()
+		_play_body("jump")
 	elif not is_on_floor() and velocity.y < 0:
-		_character_skin.fall()
+		_play_body("fall")
 	elif is_on_floor():
 		var xz_velocity := Vector3(velocity.x, 0, velocity.z)
 		if xz_velocity.length() > stopping_speed:
-			_character_skin.set_moving(true)
-			_character_skin.set_moving_speed(inverse_lerp(0.0, move_speed, xz_velocity.length()))
+			_play_body("set_moving", [true])
+			_play_body("set_moving_speed", [inverse_lerp(0.0, move_speed, xz_velocity.length())])
 		else:
-			_character_skin.set_moving(false)
+			_play_body("set_moving", [false])
 
 	if is_just_on_floor:
 		_landing_sound.play()
@@ -180,9 +192,35 @@ func _physics_process(delta: float) -> void:
 
 
 func attack() -> void:
-	_attack_animation_player.play("Attack")
-	_character_skin.punch()
-	velocity = _rotation_root.transform.basis * Vector3.BACK * attack_impulse
+	_throw_saber()
+
+
+func feed_light(lux: float, delta: float) -> void:
+	_light_detector.sample(lux, delta)
+
+
+func _throw_saber() -> void:
+	if not _saber_ready:
+		return
+	_saber_ready = false
+	var saber := SABER_SCENE.instantiate() as Area3D
+	get_parent().add_child(saber)
+	saber.global_position = global_position + Vector3(0, 1.25, 0)
+	# Mario and CharacterRotationRoot face +Z (run direction), not Godot's -Z.
+	var forward := _last_strong_direction
+	forward.y = 0.0
+	saber.throw(forward)
+	saber.tree_exited.connect(_on_saber_returned)
+
+
+func _on_saber_returned() -> void:
+	_saber_ready = true
+
+
+func _play_body(method: String, args: Array = []) -> void:
+	_character_skin.callv(method, args)
+	if _mario_visual.has_method(method):
+		_mario_visual.callv(method, args)
 
 
 func shoot() -> void:
@@ -245,9 +283,22 @@ func damage(_impact_point: Vector3, force: Vector3) -> void:
 	lose_coins()
 
 
+func kill() -> void:
+	if _dead:
+		return
+	_dead = true
+	died.emit()
+
+
 func _orient_character_to_direction(direction: Vector3, delta: float) -> void:
-	var left_axis := Vector3.UP.cross(direction)
-	var rotation_basis := Basis(left_axis, Vector3.UP, direction).get_rotation_quaternion()
+	# World-space run direction expressed in Player local space (spawn yaw is 180° on first_build).
+	var local_direction := (global_transform.basis.inverse() * direction)
+	local_direction.y = 0.0
+	if local_direction.length() < 0.001:
+		return
+	local_direction = local_direction.normalized()
+	var left_axis := Vector3.UP.cross(local_direction)
+	var rotation_basis := Basis(left_axis, Vector3.UP, local_direction).get_rotation_quaternion()
 	var model_scale := _rotation_root.transform.basis.get_scale()
 	_rotation_root.transform.basis = Basis(_rotation_root.transform.basis.get_rotation_quaternion().slerp(rotation_basis, delta * rotation_speed)).scaled(
 		model_scale,
