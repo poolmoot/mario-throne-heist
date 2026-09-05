@@ -14,9 +14,9 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="3d third person controller"
+config/name="Mario: Throne Heist"
 run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 run/max_fps=60
 config/icon="res://icon.png"
 
@@ -27,10 +27,9 @@ FullScreenHandler="*res://full_screen_handler.gd"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/stretch/mode="canvas_items"
-window/stretch/aspect="keep_height"
+window/size/viewport_width=800
+window/size/viewport_height=480
+window/stretch/mode="viewport"
 
 [dotnet]
 
@@ -123,3 +122,14 @@ pause={
 [physics]
 
 3d/default_gravity=16.0
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+lights_and_shadows/directional_shadow/size=1024
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=0
+scaling_3d/mode=0
+scaling_3d/scale=0.7
+shading/overrides/force_vertex_shading=true
