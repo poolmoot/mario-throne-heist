@@ -5,7 +5,7 @@
 <h1 align="center">Mario: Throne Heist</h1>
 
 <p align="center">
-  <strong>A 120-second stealth arcade for a 5-inch screen, a joystick, and a light sensor that thinks it is a Jedi.</strong>
+  <strong>##Would appreciate a star for my project" A 120-second stealth arcade for a 5-inch screen, a joystick, and a light & distance sensor that thinks it is a Jedi.</strong>
 </p>
 
 <p align="center">
@@ -17,11 +17,12 @@
   <img alt="MIT" src="https://img.shields.io/badge/license-MIT-22c55e?style=flat-square" />
 </p>
 
+## the base & prupose of my game 
 Mario has two minutes to walk into a compact Imperial city, sit on a throne that is not his, and leave before the local security union files a complaint. The whole thing runs on an [Arduino Uno Q](https://www.arduino.cc/) with 4 GB of RAM, a Modulino joystick, three buttons, a light sensor, and a vibration motor. If that sentence sounds like a dare, that is because it was.
 
 This is not *Hitman*. This is not *Mario Kart*. This is a third-person acquire-and-escape loop, forked from GDQuest's RoboBlast controller, retargeted at hardware that would rather be blinking an LED.
 
-## The pitch
+## The gameplay 
 
 You are a plumber with a glowing stick. The city is KayKit tiles scaled until Mario fits the sidewalks. Stormtroopers patrol, shoot, and have line-of-sight opinions. The throne is gold, slightly too large, and becomes a hat the moment you touch it. Copenhagen startup logos are lying around like coins, because if you are already committing IP crimes you might as well pad the valuation HUD.
 
@@ -62,7 +63,7 @@ The game is fully playable on the Uno Q without a mouse. Touch is for menus. Com
 | Button A | Interact / confirm |
 | Button B | Disguise (when the armor is cooperating) |
 | Button C | Crouch, which is stealth for people with knees |
-| Modulino Light @ `0x53` | Cover-tap throws the saber **once** |
+| Modulino Light @ `0x53` | Cover-tap throws the saber **once** and the ##distance sensor can control how forceful to throw it |
 | Modulino Vibro | Best-effort thumps on throw, impact, and "you have been seen" |
 | 5" 800×480 touch | Title, pause, settings, results |
 
